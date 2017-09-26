@@ -1,5 +1,3 @@
-Place your catalog project in this directory.
-
 # Udacity Catalog app project
 This project is for for Udacity's **Full Stack nanodegree program**.
 This is a small web application that provides list of items within a variety of categories and integrates third party user registration and authentication.
