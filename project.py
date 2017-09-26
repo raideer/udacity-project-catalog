@@ -5,6 +5,7 @@ from auth import OAuthSignIn, GoogleSignIn
 from database import db, lm, User, Category, Item
 from slugify import slugify
 
+# Configuring Flask, SQLAlchemy and oAuth
 app = Flask(__name__)
 app.config.from_object('oauth_config')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -14,6 +15,7 @@ lm.init_app(app)
 with app.app_context():
     db.create_all()
 
+# This method will be called whenever a guest tries to access user restricted page
 @lm.unauthorized_handler
 def unauthorized():
     flash('Please log in to access that page', 'alert-danger')
@@ -36,6 +38,8 @@ def catalogItems(slug):
     catalog = Category.query.filter_by(slug=slugify(slug)).first()
     return render_template('pages/catalog.html', catalog = catalog, categories = categories)
 
+# Since this page should be accessed only by users, we can make use of the flask-login package
+# and add the @login_required decorator to handle this for us
 @app.route("/catalog/create", methods=['GET', 'POST'])
 @login_required
 def createCatalog():
@@ -180,18 +184,26 @@ def editItem(item_id):
 def catalogItem(catalog, item):
     return "'%s' description" % item
 
+# Handles oAuth URL generation and redirecting
+# Check out auth.py for more details
 @app.route('/auth/<provider>')
 def oauth_authorize(provider):
+    # If the user is already logged in, redirect him/her to index
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
     oauth = OAuthSignIn.get_provider(provider)
     return oauth.authorize();
 
+# Handles callbacks from oAuth providers
 @app.route('/callback/<provider>')
 def oauth_callback(provider):
+    # Again, making sure the user isn't logged in
     if not current_user.is_anonymous:
         return redirect(url_for('index'))
+
     oauth = OAuthSignIn.get_provider(provider)
+    # oauth.callback() processes received request arguments, creates a new 'rauth'
+    # oAuth session and returns the basic user credentials (id, username, email)
     social_id, username, email = oauth.callback()
     if social_id is None:
         flash('Authentication failed.')
