@@ -10,6 +10,7 @@ Authenticated users can create, edit and delete items, aswell as create new cate
   * [Setting up the database](#3-installing-dependencies)
   * [Running the project](#4-running-the-project)
 * [Authentication](#authentication)
+* [Images](#preview-images)
 
 # Setting up
 Follow these steps to successfully run the application.
@@ -39,3 +40,9 @@ To run the project, just type `python project.py` and python flask will handle t
 # Authentication
 This project implements 3 oAuth providers: twitter, google and facebook. The system is based on Miguel Grinberg's post about implementing multiple
 OAuth2 providers with flask using `rauth` package.
+
+# Preview images
+![Main page](https://i.imgur.com/CNbIIud.png)
+![Item creation](https://i.imgur.com/IHYN58n.png)
+![Catalog](https://i.imgur.com/gEscPHB.png)
+![Auth options](https://i.imgur.com/QEpH8ME.png)
