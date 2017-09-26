@@ -1,0 +1,22 @@
+{% extends "layouts/default.html" %}
+
+{% block body %}
+    <form action="{{url_for('createCatalog')}}" method="post" style="max-width: 500px; margin: 0 auto;">
+        <h3>Create a catalog</h3>
+        <div class="form-group {{ 'has-danger' if errors['name'] }}">
+            <label>Catalog name</label>
+            <input name="name" type="text" value="{{name}}" class="form-control" placeholder="Name...">
+            {% if errors['name'] %}
+                <span class="form-control-feedback">{{ errors['name'] }}</span>
+            {% endif %}
+        </div>
+        <div class="form-group {{ 'has-danger' if errors['description'] }}">
+            <label>Catalog description</label>
+            <textarea name="description" class="form-control" placeholder="Description...">{{description}}</textarea>
+            {% if errors['description'] %}
+                <span class="form-control-feedback">{{ errors['description'] }}</span>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
+    </form>
+{% endblock %}

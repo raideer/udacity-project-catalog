@@ -1,0 +1,28 @@
+{% extends "layouts/with_categories.html" %}
+
+{% block content %}
+    {% if catalog %}
+        <h2>{{ catalog.name }} items ({{ catalog.items|length }})</h2>
+        <a href="{{ url_for('deleteCatalog', catalog_slug=catalog.slug) }}" class="card-link">Delete this category</a>
+        <p class="text-muted">{{ catalog.description }}</p>
+        {% if current_user.is_authenticated %}
+            <a class="nav-link" href="{{url_for('createCatalogItem', catalog=catalog.slug)}}"><strong>Add an item to {{catalog.name}}</strong></a>
+        {% endif %}
+        {% for item in catalog.items %}
+            <div class="card">
+                <div class="card-block">
+                    <h4 class="card-title">{{ item.name }}</h4>
+                    <p class="card-text">{{ item.description }}</p>
+                    <p class="text-muted">Created: {{ item.created_at.strftime("%B %d, %Y, %H:%M") }} by <i>{{ item.user.nickname }}</i></p>
+                    {% if current_user.is_authenticated and current_user == item.user %}
+                        <a href="{{url_for('editItem', item_id=item.id)}}" class="card-link">Edit</a>
+                        <a href="{{url_for('deleteItem', item_id=item.id)}}" class="card-link">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h2>Catalog not found!</h2>
+    {% endif %}
+
+{% endblock %}

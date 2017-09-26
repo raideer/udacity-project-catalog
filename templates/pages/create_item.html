@@ -1,0 +1,53 @@
+{% extends "layouts/default.html" %}
+
+{% block head_assets %}
+    <link rel="stylesheet" href="{{url_for('static', filename='css/selectize.bootstrap3.css')}}">
+{% endblock %}
+
+{% block js_assets %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="{{url_for('static', filename='js/selectize.min.js')}}"></script>
+
+    <script>
+        $('.single-select').selectize({
+            create: true,
+            sortField: 'text'
+        });
+    </script>
+{% endblock %}
+
+{% block body %}
+    <form action="{{url_for('createCatalogItem')}}" method="post" style="max-width: 500px; margin: 0 auto;">
+        <h3>Create an item</h3>
+        <div class="form-group {{ 'has-danger' if errors['name'] }}">
+            <label>Item name</label>
+            <input name="name" type="text" value="{{name}}" class="form-control" placeholder="Name...">
+            {% if errors['name'] %}
+                <span class="form-control-feedback">{{ errors['name'] }}</span>
+            {% endif %}
+        </div>
+        <div class="form-group {{ 'has-danger' if errors['category'] }}">
+            <label>Category</label>
+            <select name="category" class="form-control single-select">
+                {% for category in categories %}
+                    {% if category.slug == catalog %}
+                        <option selected value="{{category.name}}">{{category.name}}</option>
+                    {% else %}
+                        <option value="{{category.name}}">{{category.name}}</option>
+                    {% endif%}
+                {% endfor %}
+            </select>
+            {% if errors['category'] %}
+                <span class="form-control-feedback">{{ errors['category'] }}</span>
+            {% endif %}
+        </div>
+        <div class="form-group {{ 'has-danger' if errors['description'] }}">
+            <label>Item description</label>
+            <textarea name="description" class="form-control" placeholder="Description...">{{description}}</textarea>
+            {% if errors['description'] %}
+                <span class="form-control-feedback">{{ errors['description'] }}</span>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn btn-success">Create</button>
+    </form>
+{% endblock %}

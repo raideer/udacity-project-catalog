@@ -1,0 +1,30 @@
+{% extends "layouts/with_categories.html" %}
+
+{% block content %}
+    {% if current_user.is_authenticated %}
+        <ul class="nav" style="margin-bottom:20px;">
+            <li class="nav-item">
+                <a class="nav-link" href="{{url_for('createCatalogItem')}}"><strong>Add an item</strong></a>
+            </li>
+        </ul>
+    {% endif %}
+
+    {% if latest_items.count() > 0 %}
+        <h6>Latest items</h6>
+
+        {% for item in latest_items %}
+            <div class="card">
+                <div class="card-block">
+                    <a href="{{url_for('catalogItems', slug=item.category.slug )}}">{{ item.category.name }}</a>
+                    <h4 class="card-title">{{ item.name }}</h4>
+                    <p class="card-text">{{ item.description }}</p>
+                    <p class="text-muted">Created: {{ item.created_at.strftime("%B %d, %Y, %H:%M") }} by <i>{{ item.user.nickname }}</i></p>
+                    {% if current_user.is_authenticated and current_user == item.user %}
+                        <a href="{{url_for('editItem', item_id=item.id)}}" class="card-link">Edit</a>
+                        <a href="{{url_for('deleteItem', item_id=item.id)}}" class="card-link">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

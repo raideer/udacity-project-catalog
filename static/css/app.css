@@ -1,0 +1,49 @@
+.card-title {
+    margin-top: 0;
+}
+
+.card {
+    margin-bottom: 5px;
+}
+
+.navbar-text {
+    padding: 0.5rem 0.7rem;
+    line-height: 1.625rem;
+}
+
+nav.navbar {
+    border-bottom: 1px solid #f2f2f2;
+    margin-bottom: 20px;
+}
+
+.login-btn {
+    padding: 6px 10px;
+    color: #fff;
+    border-radius: 5px;
+    margin: 5px;
+    transition: opacity 0.4s;
+    display: block;
+}
+
+.login-btn:hover {
+    text-decoration: none;
+    color: #fff;
+    opacity: 0.8;
+}
+
+.login-btn .fa {
+    padding-right: 6px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.login-btn--facebook {
+    background-color: #3B5998;
+}
+
+.login-btn--google {
+    background-color: #bb0000;
+}
+
+.login-btn--twitter {
+    background-color: #55acee;
+}

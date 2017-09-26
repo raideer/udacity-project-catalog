@@ -1,0 +1,4 @@
+rauth
+flask-login
+flask-sqlalchemy
+slugify

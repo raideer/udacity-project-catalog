@@ -1,0 +1,24 @@
+{% extends "layouts/default.html" %}
+
+{% block body %}
+    <ul class="list-unstyled" style="margin: 0 auto;max-width:400px;">
+        <li>
+            <a class="login-btn login-btn--facebook" href={{ url_for('oauth_authorize', provider='facebook') }}>
+                <i class="fa fa-facebook" aria-hidden="true"></i>
+                Sign in with Facebook
+            </a>
+        </li>
+        <li>
+            <a class="login-btn login-btn--google" href={{ url_for('oauth_authorize', provider='google') }}>
+                <i class="fa fa-google-plus" aria-hidden="true"></i>
+                Sign in with Google+
+            </a>
+        </li>
+        <li>
+            <a class="login-btn login-btn--twitter" href={{ url_for('oauth_authorize', provider='twitter') }}>
+                <i class="fa fa-twitter" aria-hidden="true"></i>
+                Sign in with Twitter
+            </a>
+        </li>
+    </ul>
+{% endblock %}
