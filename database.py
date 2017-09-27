@@ -5,6 +5,7 @@ import datetime
 db = SQLAlchemy()
 lm = LoginManager()
 
+
 class User(UserMixin, db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -20,6 +21,7 @@ class User(UserMixin, db.Model):
             'id': self.id,
             'nickname': self.nickname
         }
+
 
 class Category(db.Model):
     __tablename__ = 'categories'
@@ -42,6 +44,7 @@ class Category(db.Model):
             'Item': [i.serialize for i in self.items]
         }
 
+
 class Item(db.Model):
     __tablename__ = 'items'
     id = db.Column(db.Integer, primary_key=True)
@@ -61,6 +64,7 @@ class Item(db.Model):
             'created_at': self.created_at,
             'User': self.user.serialize
         }
+
 
 @lm.user_loader
 def load_user(id):

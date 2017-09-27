@@ -1,7 +1,8 @@
 from flask import url_for, current_app, redirect, request, session
 from rauth import OAuth1Service, OAuth2Service
+import json
+import urllib2
 
-import json, urllib2
 
 # This code is based on Miguel Grinberg's post about implementing multiple
 # OAuth2 provicers with flask using rauth
@@ -22,16 +23,17 @@ class OAuthSignIn(object):
 
     def get_callback_url(self):
         return url_for('oauth_callback', provider=self.provider_name,
-                        _external=True)
+                       _external=True)
 
     @classmethod
     def get_provider(self, provider_name):
         if self.providers is None:
-            self.providers={}
+            self.providers = {}
             for provider_class in self.__subclasses__():
                 provider = provider_class()
                 self.providers[provider.provider_name] = provider
         return self.providers[provider_name]
+
 
 class GoogleSignIn(OAuthSignIn):
     def __init__(self):
@@ -61,13 +63,14 @@ class GoogleSignIn(OAuthSignIn):
                 data={'code': request.args['code'],
                       'grant_type': 'authorization_code',
                       'redirect_uri': self.get_callback_url()
-                     },
-                decoder = json.loads
+                      },
+                decoder=json.loads
         )
         me = oauth_session.get('').json()
         return ('google$' + me['sub'],
                 me['name'],
                 me['email'])
+
 
 class TwitterSignIn(OAuthSignIn):
     def __init__(self):
@@ -103,6 +106,7 @@ class TwitterSignIn(OAuthSignIn):
         username = me.get('screen_name')
         return (social_id, username, None)   # Twitter does not provide email
 
+
 class FacebookSignIn(OAuthSignIn):
     def __init__(self):
         super(FacebookSignIn, self).__init__('facebook')
@@ -137,7 +141,6 @@ class FacebookSignIn(OAuthSignIn):
         me = oauth_session.get('me?fields=id,email').json()
         return (
             'facebook$' + me['id'],
-            me.get('email').split('@')[0],  # Facebook does not provide
-                                            # username, so we use the email instead
+            me.get('email').split('@')[0],
             me.get('email')
         )
