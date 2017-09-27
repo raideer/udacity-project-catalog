@@ -1,6 +1,7 @@
 from flask import Flask, render_template, redirect, url_for
 from flask import flash, request, jsonify
 from flask_login import login_user, logout_user, current_user, login_required
+from sqlalchemy.sql.functions import func
 
 from auth import OAuthSignIn, GoogleSignIn
 from database import db, lm, User, Category, Item
@@ -34,9 +35,15 @@ def index():
 
 
 @app.route("/catalog.json")
-def json():
+def jsonCatalog():
     categories = Category.query.all()
     return jsonify(Category=[i.serialize for i in categories])
+
+
+@app.route("/item.json")
+def jsonItem():
+    item = Item.query.order_by(func.random()).first()
+    return jsonify(Item=item.serialize)
 
 
 @app.route("/catalog/<slug>")
